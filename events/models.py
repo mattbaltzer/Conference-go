@@ -3,14 +3,6 @@ from django.urls import reverse
 
 
 class State(models.Model):
-    """
-    The State model represents a US state with its name
-    and abbreviation.
-
-    State is a Value Object and, therefore, does not have a
-    direct URL to view it.
-    """
-
     name = models.CharField(max_length=20)
     abbreviation = models.CharField(max_length=2)
 
@@ -22,22 +14,19 @@ class State(models.Model):
 
 
 class Location(models.Model):
-    """
-    The Location model describes the place at which an
-    Event takes place, like a hotel or conference center.
-    """
-
     name = models.CharField(max_length=200)
     city = models.CharField(max_length=200)
     room_count = models.PositiveSmallIntegerField()
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    picture_url = models.URLField(null=True)
 
     state = models.ForeignKey(
         State,
         related_name="+",  # do not create a related name on State
         on_delete=models.PROTECT,
     )
+
 
     def get_api_url(self):
         return reverse("api_show_location", kwargs={"id": self.id})

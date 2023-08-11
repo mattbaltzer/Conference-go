@@ -25,6 +25,11 @@ class Attendee(models.Model):
     def get_api_url(self):
         return reverse("api_show_attendee", kwargs={"id": self.id})
 
+    def create_badge(self):
+        if not hasattr(self, "badge"):
+            badge = Badge(attendee=self)
+            badge.save()
+
 
 class Badge(models.Model):
     """
